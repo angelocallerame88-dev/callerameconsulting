@@ -278,6 +278,7 @@ details p{margin-top:12px;color:var(--muted);max-width:42em}
 .cta h2{font-size:clamp(2.2rem,5vw,4rem);position:relative}
 .cta p{color:#a9b0bc;font-size:1.12rem;margin-top:18px;max-width:30em;position:relative}
 .cta .btn{background:#fff;color:var(--ink);margin-top:30px;position:relative;z-index:1}
+.book-opts{position:relative;z-index:1;margin-top:18px;color:#c9ccd3;font-size:.95rem}.book-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.bo{font:inherit;font-weight:500;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:10px 14px;min-height:44px;text-decoration:none;cursor:pointer}.bo:hover{background:rgba(255,255,255,.16)}
 .cta .mail{display:block;margin-top:16px;color:#7fd3aa;font-family:"Geist Mono",monospace;font-size:.9rem;text-decoration:none;position:relative}
 .cta-me{position:relative;align-self:end;margin-bottom:calc(-1 * clamp(40px,7vw,88px))}
 .cta-me img{width:100%;max-width:300px;height:auto;aspect-ratio:2/3;object-fit:contain;margin-left:auto;filter:drop-shadow(0 20px 40px rgba(0,0,0,.4))}
@@ -604,7 +605,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
         <span class="label" style="color:#7fd3aa">Check-up gratuito · 45 minuti · videochiamata</span>
         <h2 style="margin-top:18px">45 minuti per capire dove perdi vendite.</h2>
         <p>Scrivimi due righe sulla tua azienda e su come registri oggi le trattative: guardiamo insieme i tuoi dati, in HubSpot o in un foglio, e ti dico cosa sistemerei per primo.</p>
-        <a class="btn" href="mailto:angelo@callerameconsulting.it?subject=Check-up%20gratuito">Prenota il check-up <span class="arr">→</span></a>
+        <a class="btn" id="bookBtn" href="mailto:angelo@callerameconsulting.it?subject=Check-up%20gratuito" aria-expanded="false" aria-controls="bookOpts">Prenota il check-up <span class="arr">→</span></a>
+        <div class="book-opts" id="bookOpts" hidden>
+          <span>Scrivimi due righe con il servizio che usi:</span>
+          <div class="book-row">
+            <a class="bo" target="_blank" rel="noopener" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=angelo@callerameconsulting.it&amp;su=Check-up%20gratuito">Gmail</a>
+            <a class="bo" target="_blank" rel="noopener" href="https://outlook.office.com/mail/deeplink/compose?to=angelo@callerameconsulting.it&amp;subject=Check-up%20gratuito">Outlook</a>
+            <a class="bo" href="mailto:angelo@callerameconsulting.it?subject=Check-up%20gratuito">App di posta</a>
+            <button class="bo" type="button" id="copyMail">Copia indirizzo</button>
+          </div>
+        </div>
         <a class="mail" href="mailto:angelo@callerameconsulting.it">angelo@callerameconsulting.it</a>
       </div>
       <div class="cta-me"><img src="angelo.webp" alt="" width="560" height="840" loading="lazy"></div>
@@ -624,6 +634,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 (()=>{
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hdr=document.getElementById('hdr');
+const bookBtn=document.getElementById('bookBtn'),bookOpts=document.getElementById('bookOpts');
+if(bookBtn&&bookOpts){bookBtn.addEventListener('click',e=>{e.preventDefault();bookOpts.hidden=!bookOpts.hidden;bookBtn.setAttribute('aria-expanded',String(!bookOpts.hidden))});
+const cp=document.getElementById('copyMail');cp.addEventListener('click',async()=>{try{await navigator.clipboard.writeText('angelo@callerameconsulting.it');cp.textContent='Copiato ✓'}catch(e){cp.textContent='angelo@callerameconsulting.it'}setTimeout(()=>cp.textContent='Copia indirizzo',2500)});}
+
 
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
